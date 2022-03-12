@@ -1,4 +1,3 @@
-# Python program to check whether the given integer is a prime number or not
 import time
 import matplotlib.pyplot as plt
 import numpy as np
@@ -7,6 +6,7 @@ primeBank = [2]
 valueList = []
 timeList = []
 
+# renvoie si l'entrée est un nombre premier
 def isPrime(potentialPrime):
 	primeControl = []
 	if potentialPrime in primeBank:
@@ -20,32 +20,27 @@ def isPrime(potentialPrime):
 			return False
 
 
+# renvoie tous les nombres premiers inférieurs à une borne
 def primeFinderUntil(bound):
 	for potentialPrime in range(primeBank[-1] + 1,bound):
 		if isPrime(potentialPrime):
 			primeBank.append(potentialPrime)
 
 
+# renvoie x nombres premiers
 def xPrimeFinder(quantity):
 	bound = 1
 	while len(primeBank) < quantity:
 		primeFinderUntil(bound)
 		bound += 1
 
-
-# start = time.time()
-# primeFinderUntil(100)
-# xPrimeFinder(100)
-# runTime = (time.time() - start)
-# print('\nTemps de calcul : ', round(runTime,3), ' sec')
-# print(primeBank)
-
-
+# renvoie le n-ième nombre premier
 def getNthPrime(rank):
 	xPrimeFinder(rank)
 	return primeBank[-1]
 
 
+# trace le temps nécessaire pour une quantité de calcul
 def plotTimeToCompute(quantity):
 	start = time.time()
 	bound = 1
@@ -68,8 +63,6 @@ def plotTimeToCompute(quantity):
 
 
 # fonction pour avoir le temps pour un nombre de calcul
-# fonction pour avoil le nombre de calcul pour un temps
-
 def timeFromSeconds(seconds):
   seconds = seconds % (24 * 3600)
   hour = seconds // 3600
@@ -80,6 +73,7 @@ def timeFromSeconds(seconds):
   return "%d:%02d:%02d" %(hour, minutes, seconds)
 
 
+# renvoie le nombre de jours, heures, minutes et secondes à partir de secondes
 def timeReal(seconds):
 	day = seconds // (24 * 3600)
 	seconds = seconds % (24 * 3600)
@@ -91,6 +85,7 @@ def timeReal(seconds):
 	return "%02d days %02d hours %02d min %02d sec" %(day, hour, minutes, seconds)
 
 
+#renvoie le temps de calcul à partir d'un nombre de calculs (sur base d'un polynôme)
 def getRawTime(quantity):
 	if quantity >= 1500:
 		return 25*(10**(-7))*(quantity**2) - 0.0075*quantity + 6
@@ -99,16 +94,24 @@ def getRawTime(quantity):
 def predictTimeToCompute(quantity):
 	return timeReal(getRawTime(quantity))
 
-# intégrer Taylor Young pour trouver une meilleure fonction pour approximer
+
+
 
 # EXEC
 
-# plotTimeToCompute(10000)
+
+# trouve tous les nombres premiers inférieurs à 10k
+# primeFinderUntil(100000)
+# print(primeBank)
+
+# plotTimeToCompute(1000)
 # print(getNthPrime(6282))
 
+
+# trouve 20 nombres premiers
 # xPrimeFinder(20)
 # print(primeBank)
 
-# print(timeReal(3600*24))
 
-print(predictTimeToCompute(82000000))
+# affiche le graph
+# print(predictTimeToCompute(10000))
