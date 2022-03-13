@@ -32,6 +32,7 @@ def dropZeros(number):
 		return number
 
 
+# faire un latex avec le cheminement pour obtenir la formule
 # renvoie si le nombre premier est un nombre de Mersenne
 def isMersenne(number):
 	if isPrime(number):
@@ -46,7 +47,6 @@ def getMersennePower(number):
 	if isPrime(number):
 		if isMersenne(number):
 			return dropZeros(math.log((number+1)**(1/math.log(2))))
-
 
 # renvoie la liste des nombres premiers de Mersenne inférieurs à une borne ainsi que leur puissance de 2
 def getMersenneUntil(bound):
@@ -134,10 +134,33 @@ def getRawTime(quantity):
 		return 25*(10**(-7))*(quantity**2) - 0.0075*quantity + 6
 
 
+# renvoie le temps estimé de calcul avec ma machine pour une quantité donnée de nombres premiers
 def predictTimeToCompute(quantity):
 	return timeReal(getRawTime(quantity))
 
 
+# renvoie la décomposition
+# def primeNumberDecomposition(number):
+	# je check s'il est premier
+	# sinon
+	# je fill la bank de nombres premiers jusqu'au nombre inférieur ou égal
+
+	#
+
+
+def isFermat(number):
+	if isPrime(number):
+		if number > 2:
+			if type(dropZeros(math.log((math.log((number-1)**(1/math.log(2))))**(1/math.log(2))))) == int:
+				return True
+			else:
+				return False
+		else: 
+			return False
+	else:
+		return False
+
+# ________________________________________________________________________
 
 
 # EXEC
@@ -165,6 +188,5 @@ def predictTimeToCompute(quantity):
 # print(predictTimeToCompute(10000))
 
 
-
-
-print(getMersenneUntil(10000))
+# affiche tous les nombres de Mersenne inférieurs à 10k
+# print(getMersenneUntil(10000))
