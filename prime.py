@@ -148,6 +148,8 @@ def predictTimeToCompute(quantity):
 	#
 
 
+# donner la formule
+
 def isFermat(number):
 	if isPrime(number):
 		if number > 2:
@@ -159,6 +161,23 @@ def isFermat(number):
 			return False
 	else:
 		return False
+
+
+def getFermatUntil(bound):
+	fermatBank = []
+	for i in range(bound):
+		if isFermat(i):
+			fermatBank.append(i)
+	return fermatBank
+
+
+def getXfermat(quantity):
+	fermatBank = []
+	bound = 2
+	while len(fermatBank) < quantity:
+		fermatBank = getFermatUntil(bound)
+		bound += 2	
+	return fermatBank
 
 # ________________________________________________________________________
 
@@ -190,3 +209,10 @@ def isFermat(number):
 
 # affiche tous les nombres de Mersenne inférieurs à 10k
 # print(getMersenneUntil(10000))
+
+
+# renvoie tous les nombres de Fermat inférieurs à une borne
+# print(getFermatUntil(300))
+
+# renvoie 4 nombres de fermats
+# print(getXfermat(4))
