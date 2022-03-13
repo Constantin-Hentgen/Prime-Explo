@@ -139,17 +139,7 @@ def predictTimeToCompute(quantity):
 	return timeReal(getRawTime(quantity))
 
 
-# renvoie la décomposition
-# def primeNumberDecomposition(number):
-	# je check s'il est premier
-	# sinon
-	# je fill la bank de nombres premiers jusqu'au nombre inférieur ou égal
-
-	#
-
-
-# donner la formule
-
+# determine si le nombre est un nombre de Fermat
 def isFermat(number):
 	if isPrime(number):
 		if number > 2:
@@ -163,6 +153,7 @@ def isFermat(number):
 		return False
 
 
+# renvoie tous les nombres de Fermat inférieurs à une borne
 def getFermatUntil(bound):
 	fermatBank = []
 	for i in range(bound):
@@ -171,6 +162,7 @@ def getFermatUntil(bound):
 	return fermatBank
 
 
+# renvoie une quantité précise de nombre de Fermat
 def getXfermat(quantity):
 	fermatBank = []
 	bound = 2
@@ -180,6 +172,7 @@ def getXfermat(quantity):
 	return fermatBank
 
 
+# détermine si un nombre possède des jumeaux
 def hasTwin(number):
 	if (isPrime(number)):
 		if (number >= 3 and isPrime(number-2)) or isPrime(number+2):
@@ -190,6 +183,7 @@ def hasTwin(number):
 		return False
 
 
+# renvoie le ou les jumeaux s'ls existent
 def twinFinder(number):
 	twins = []
 	if (hasTwin(number)):
@@ -200,11 +194,45 @@ def twinFinder(number):
 	return twins
 			
 
+# détermine si un nombre est un nombre de Sophie Germain
+def isSophieGermain(number):
+	primeFinderUntil(2*number+2)
+	if isPrime(number):
+		if isPrime(2*number+1):
+			return True
+		else:
+			return False
+	else:
+		return False
 
 
+# renvoie tous les nombres de Sophie Germain inférieurs à une borne
+def getSophieGermainUntil(bound):
+	sophieGermainBank = []
+	for i in range(bound):
+		if isSophieGermain(i):
+			sophieGermainBank.append(i)
+	return sophieGermainBank
 
 
+# renvoie une quantité définie de nombre de Sophie Germain
+def getXsophieGermain(quantity):
+	sophieGermainBank = []
+	bound = 1
+	while len(sophieGermainBank) < quantity:
+		sophieGermainBank = getSophieGermainUntil(bound)
+		bound += 1
+	return sophieGermainBank
 
+
+# def getTrustworthy(number):
+
+
+# renvoie la décomposition
+# def primeNumberDecomposition(number):
+	# je check s'il est premier
+	# sinon
+	# je fill la bank de nombres premiers jusqu'au nombre inférieur ou égal
 
 
 
@@ -248,5 +276,14 @@ def twinFinder(number):
 
 
 # renvoie si oui ou non le nombre entré posséde au moins un jumeau
-print(7,hasTwin(7))
-print(5, twinFinder(5))
+# print(7,hasTwin(7))
+# print(5, twinFinder(5))
+
+
+# renvoie tous les nombres de Sophie Germain inférieurs à une borne
+# print(getSophieGermainUntil(1000))
+
+
+# renvoie une liste avec un nombre précis de nombres de Sophie Germain
+# print(getXsophieGermain(10))
+
