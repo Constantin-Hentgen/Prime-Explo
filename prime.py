@@ -179,6 +179,35 @@ def getXfermat(quantity):
 		bound += 2	
 	return fermatBank
 
+
+def hasTwin(number):
+	if (isPrime(number)):
+		if (number >= 3 and isPrime(number-2)) or isPrime(number+2):
+			return True
+		else:
+			return False
+	else:
+		return False
+
+
+def twinFinder(number):
+	twins = []
+	if (hasTwin(number)):
+		if (number >= 3 and isPrime(number-2)):
+			twins.append(number-2)
+		if (isPrime(number+2)):
+			twins.append(number+2)
+	return twins
+			
+
+
+
+
+
+
+
+
+
 # ________________________________________________________________________
 
 
@@ -216,3 +245,8 @@ def getXfermat(quantity):
 
 # renvoie 4 nombres de fermats
 # print(getXfermat(4))
+
+
+# renvoie si oui ou non le nombre entré posséde au moins un jumeau
+print(7,hasTwin(7))
+print(5, twinFinder(5))
