@@ -224,6 +224,19 @@ def getXsophieGermain(quantity):
 	return sophieGermainBank
 
 
+def isPythagorean(number):
+	primeFinderUntil(number+1)
+	if isPrime(number):
+		if isPrime(4*number+1):
+			return True
+		else:
+			return False
+	else:
+		return False
+
+
+
+
 # def getTrustworthy(number):
 
 
@@ -286,3 +299,6 @@ def getXsophieGermain(quantity):
 # renvoie une liste avec un nombre précis de nombres de Sophie Germain
 # print(getXsophieGermain(10))
 
+
+for i in range(30):
+	print(i, isPythagorean(i))
