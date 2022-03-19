@@ -265,13 +265,12 @@ def getTrustworthy(number):
 def primeNumberDecomposition(number):
 	primeFinderUntil(number)
 	multiples = []
-	multiplesPrime = []
 	reste = number
+	# final = [0,0]
 
 	if isPrime(number) == False:
 
 		counter = 0
-		# print(len(primeBank))
 		while isPrime(reste) == False:
 			if reste % primeBank[counter] == 0:
 				multiples.append(primeBank[counter])
@@ -280,14 +279,19 @@ def primeNumberDecomposition(number):
 			else:
 				counter += 1
 
-		multiples.append(primeBank[counter])
+	bigOne = 1
+	for element in multiples:
+		bigOne *= element
+
+	multiples.append(int(number/bigOne))
+
+	# counter = 0
+	# while final[-1] != multiples[-1]:
+	# 	final.append((multiples[counter],multiples.count(multiples[counter])))
+	# 	counter += multiples.count(multiples[counter])
 
 	return multiples
-		# je prend le premier, je le divise pour 
-		# je teste si il est multiple en partant du bas de la liste des nombres premiers
 
-
-# retourne un ultime produit
 
 # ________________________________________________________________________
 
@@ -296,7 +300,11 @@ def primeNumberDecomposition(number):
 
 
 for i in range(1,200):
-	print(i, isPrime(i) ,primeNumberDecomposition(i))
+	if isPrime(i) == False:
+		total = 1
+		for element in primeNumberDecomposition(i):
+			total *= element
+		print(i, primeNumberDecomposition(i), total==i)
 
 
 
