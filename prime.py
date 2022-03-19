@@ -47,6 +47,7 @@ def getMersennePower(number):
 		if isMersenne(number):
 			return dropZeros(math.log((number+1)**(1/math.log(2))))
 
+
 # renvoie la liste des nombres premiers de Mersenne inférieurs à une borne ainsi que leur puissance de 2
 def getMersenneUntil(bound):
 	primeFinderUntil(bound)
@@ -309,16 +310,19 @@ def primeNumberDecomposition(number):
 # EXEC
 
 
+# renvoie toutes les décompositions en produit de tous les nombres jusqu'à 200
 for i in range(1,200):
 	if isPrime(i) == False:
 		decompo = primeNumberDecomposition(i)
 		total = 1
 
 		for element in decompo:
-			total *= element[0]*element[1]
+			total *= element[0]**element[1]
 		print(i, primeNumberDecomposition(i), total == i)
 	
 
+
+# print(12722, primeNumberDecomposition(12722))
 
 
 
