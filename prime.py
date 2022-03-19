@@ -285,12 +285,22 @@ def primeNumberDecomposition(number):
 
 	multiples.append(int(number/bigOne))
 
-	# counter = 0
-	# while final[-1] != multiples[-1]:
+
+
+
+
+	assumption = multiples
+	final = []
+	while len(assumption) > 0:
+		final.append((assumption[0],assumption.count(assumption[0])))
+
+		for i in range(assumption.count(assumption[0])):
+			assumption.remove(assumption[0])
+
 	# 	final.append((multiples[counter],multiples.count(multiples[counter])))
 	# 	counter += multiples.count(multiples[counter])
+	return final
 
-	return multiples
 
 
 # ________________________________________________________________________
@@ -301,11 +311,13 @@ def primeNumberDecomposition(number):
 
 for i in range(1,200):
 	if isPrime(i) == False:
+		decompo = primeNumberDecomposition(i)
 		total = 1
-		for element in primeNumberDecomposition(i):
-			total *= element
-		print(i, primeNumberDecomposition(i), total==i)
 
+		for element in decompo:
+			total *= element[0]*element[1]
+		print(i, primeNumberDecomposition(i), total == i)
+	
 
 
 
