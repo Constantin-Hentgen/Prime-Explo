@@ -171,7 +171,7 @@ def getXfermat(quantity):
 	return fermatBank
 
 
-# détermine si un nombre possède des jumeaux
+# détermine si un nombre possède des jumeaux (N+2 || N-2, N nombre premier)
 def hasTwin(number):
 	if (isPrime(number)):
 		if (number >= 3 and isPrime(number-2)) or isPrime(number+2):
@@ -182,7 +182,7 @@ def hasTwin(number):
 		return False
 
 
-# renvoie le ou les jumeaux s'ls existent
+# renvoie le ou les jumeaux s'ils existent
 def twinFinder(number):
 	twins = []
 	if (hasTwin(number)):
@@ -193,7 +193,7 @@ def twinFinder(number):
 	return twins
 			
 
-# détermine si un nombre est un nombre de Sophie Germain
+# détermine si un nombre est un nombre (X) de Sophie Germain : X est premier ainsi que (2*X + 1)
 def isSophieGermain(number):
 	primeFinderUntil(2*number+2)
 	if isPrime(number):
@@ -224,6 +224,7 @@ def getXsophieGermain(quantity):
 	return sophieGermainBank
 
 
+# indique si le nombre entré est un nombre (X) de Pythagore : X = 4n + 1, n entier naturel
 def isPythagorean(number):
 	primeFinderUntil(number+1)
 	if isPrime(number):
@@ -234,6 +235,8 @@ def isPythagorean(number):
 	else:
 		return False
 
+
+# renvoie tous les nombres de Pythagore inférieurs à une borne
 def getPythagoreanUntil(bound):
 	pythagoreanBank = []
 	for i in range(bound):
@@ -241,6 +244,8 @@ def getPythagoreanUntil(bound):
 			pythagoreanBank.append(i)
 	return pythagoreanBank
 
+
+# renvoie une quantité finie de nombre de Pythagore
 def getXpythagorean(quantity):
 	pythagoreanBank = getPythagoreanUntil(quantity)
 	bound = 5
@@ -250,17 +255,18 @@ def getXpythagorean(quantity):
 	return pythagoreanBank
 
 
+# renvoie le nombre sûr : soit le nombre 2x+1 avec x nombre premier et 2x+1 premier
 def getTrustworthy(number):
 	if isSophieGermain(number):
 		return 2*number+1
 
 
 # renvoie la décomposition
-# def primeNumberDecomposition(number):
+def primeNumberDecomposition(number):
+	primeFinderUntil(number + 1)
 	# je check s'il est premier
 	# sinon
-	# je fill la bank de nombres premiers jusqu'au nombre inférieur ou égal
-
+	# je teste si il est multiple en partant du bas de la liste des nombres premiers
 
 
 # ________________________________________________________________________
