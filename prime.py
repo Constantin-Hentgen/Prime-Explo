@@ -263,16 +263,44 @@ def getTrustworthy(number):
 
 # renvoie la décomposition
 def primeNumberDecomposition(number):
-	primeFinderUntil(number + 1)
-	# je check s'il est premier
-	# sinon
-	# je teste si il est multiple en partant du bas de la liste des nombres premiers
+	primeFinderUntil(number)
+	multiples = []
+	multiplesPrime = []
+	reste = number
 
+	if isPrime(number) == False:
+
+		counter = 0
+		# print(len(primeBank))
+		while isPrime(reste) == False:
+			if reste % primeBank[counter] == 0:
+				multiples.append(primeBank[counter])
+				reste = reste / primeBank[counter]
+
+			else:
+				counter += 1
+
+		multiples.append(primeBank[counter])
+
+	return multiples
+		# je prend le premier, je le divise pour 
+		# je teste si il est multiple en partant du bas de la liste des nombres premiers
+
+
+# retourne un ultime produit
 
 # ________________________________________________________________________
 
 
 # EXEC
+
+
+for i in range(1,200):
+	print(i, isPrime(i) ,primeNumberDecomposition(i))
+
+
+
+
 
 
 # trouve tous les nombres premiers inférieurs à 10k
