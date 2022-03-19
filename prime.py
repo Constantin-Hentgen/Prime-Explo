@@ -227,17 +227,32 @@ def getXsophieGermain(quantity):
 def isPythagorean(number):
 	primeFinderUntil(number+1)
 	if isPrime(number):
-		if isPrime(4*number+1):
+		if type(dropZeros((number-1)/4)) == int:
 			return True
 		else:
 			return False
 	else:
 		return False
 
+def getPythagoreanUntil(bound):
+	pythagoreanBank = []
+	for i in range(bound):
+		if isPythagorean(i):
+			pythagoreanBank.append(i)
+	return pythagoreanBank
+
+def getXpythagorean(quantity):
+	pythagoreanBank = getPythagoreanUntil(quantity)
+	bound = 5
+	while len(pythagoreanBank) < quantity:
+		pythagoreanBank = getPythagoreanUntil(quantity + bound)
+		bound += 5
+	return pythagoreanBank
 
 
-
-# def getTrustworthy(number):
+def getTrustworthy(number):
+	if isSophieGermain(number):
+		return 2*number+1
 
 
 # renvoie la décomposition
@@ -300,5 +315,15 @@ def isPythagorean(number):
 # print(getXsophieGermain(10))
 
 
-for i in range(30):
-	print(i, isPythagorean(i))
+# renvoie tous les nombres de Pythagore inférieurs à une borne
+# print(getPythagoreanUntil(100))
+
+
+# renvoie une quantité finie de nombres de Pythagore
+# print(getXpythagorean(10))
+
+
+# renvoie tous les nombres de Sophie Germain qui sont inférieurs à 100 ainsi que le nombre sûr associé
+# for i in range(100):
+# 	if (isSophieGermain(i)):
+# 		print(i, getTrustworthy(i))
