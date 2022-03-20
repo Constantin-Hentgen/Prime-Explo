@@ -50,7 +50,6 @@ def getMersennePower(number):
 
 # renvoie la liste des nombres premiers de Mersenne inférieurs à une borne ainsi que leur puissance de 2
 def getMersenneUntil(bound):
-	primeFinderUntil(bound)
 	MersenneBank = []
 	MersennePowerBank = []
 
@@ -89,7 +88,6 @@ def plotTimeToCompute(quantity):
 	bound = 1
 
 	while len(primeBank) < quantity:
-		primeFinderUntil(bound)
 		bound += 1
 
 		if len(primeBank)%50 == 0:
@@ -196,7 +194,6 @@ def twinFinder(number):
 
 # détermine si un nombre est un nombre (X) de Sophie Germain : X est premier ainsi que (2*X + 1)
 def isSophieGermain(number):
-	primeFinderUntil(2*number+2)
 	if isPrime(number):
 		if isPrime(2*number+1):
 			return True
@@ -227,7 +224,6 @@ def getXsophieGermain(quantity):
 
 # indique si le nombre entré est un nombre (X) de Pythagore : X = 4n + 1, n entier naturel
 def isPythagorean(number):
-	primeFinderUntil(number+1)
 	if isPrime(number):
 		if type(dropZeros((number-1)/4)) == int:
 			return True
@@ -264,7 +260,6 @@ def getTrustworthy(number):
 
 # renvoie la décomposition
 def primeNumberDecomposition(number):
-	primeFinderUntil(number)
 	multiples = []
 	reste = number
 
@@ -332,19 +327,65 @@ def primeNumberSumDecomposition(number):
 
 	return primeMultiplesFinal, coefficient
 
+
+def inspector(number):
+	if isPrime(number):
+		print("Prime !")
+	else:
+		if isMersenne(number):
+			print("nombre de Mersenne")
+		if isFermat(number):
+			print("nombre de Fermat")
+		if isPythagorean(number):
+			print("nombre de Pythagore")
+		if isSophieGermain(number):
+			print("nombre de Sophie Germain")
+		else:
+			print("nombre parfaitement inintéressant")
+			print(multiplesFinder(number))
+			print("les nombres premiers voisins sont : ", primeNeighbors(number))
+
+
+def multiplesFinder(number):
+	multipleBank = []
+	for element in primeBank:
+		if number % element == 0:
+			multipleBank.append(element)
+	return multipleBank
+
+
+def primeNeighbors(number):
+	neighbors=[]
+	for element in primeBank:
+		if element > number:
+			neighbors.append(primeBank[primeBank.index(element)-1])
+			neighbors.append(element)
+			break
+	return neighbors
 # ________________________________________________________________________
 
 
 # EXEC
 
+primeFinderUntil(10000)
+
+
+# analyse tous les nombres de 400 à 800
+for i in range(400,800):
+	print("_____________________")
+	print(i)
+	inspector(i)
+
+
+
 
 # renvoie la décomposition en somme de puissance entre 2 bornes
-for j in range(345,567):
-	decompo = primeNumberSumDecomposition(j)
-	total = 0
-	for i in range(len(decompo[1])):
-		total += decompo[0][i]**decompo[1][i]
-	print(j, primeNumberSumDecomposition(j), total == j,j, total)
+# for j in range(345,567):
+# 	decompo = primeNumberSumDecomposition(j)
+# 	total = 0
+# 	for i in range(len(decompo[1])):
+# 		total += decompo[0][i]**decompo[1][i]
+# 	print(j, primeNumberSumDecomposition(j), total == j)
 
 
 
