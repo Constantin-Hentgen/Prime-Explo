@@ -303,61 +303,32 @@ def primeNumberSumDecomposition(number):
 	primeMultiples = []
 	coefficient = []
 
-	# blog fonctionnel pour la puissance de 2
-	# counter = 0
-	# while reste > 0:
-	# 	counter += 1
-	# 	reste -= primeBank[0]**counter
-
-	# primeMultiples.append(primeBank[0])
-	# coefficient.append(counter)
-
-
 	reste = number
 	for element in primeBank:
 		counter = 0
-		# print("reste :", reste, "element :", element)
+
 		while reste - (element ** counter) > 0:
 			counter += 1
-			# print(reste,element,counter)
-
 
 		primeMultiples.append(element)
+
 		if counter > 1:
 			coefficient.append(counter-1)
 		else:
 			for i in range(reste):
 				coefficient.append(0)
-				# if len(coefficient) == len(primeMultiples):
-				# 	coefficient.append(0)
-				# 	primeMultiples.append(1)
 				break
-		reste -= primeMultiples[-1]**coefficient[-1]
 
+		reste -= primeMultiples[-1]**coefficient[-1]
 		total = 0
+
 		for i in range(len(coefficient)):
 			total += primeMultiples[i]**coefficient[i]
-		
-		# print(total, number)
-
-		# while total != number:
-		# 	if len(coefficient) < len(primeMultiples):
-		# 		coefficient.append(0)
-		# 	else:
-		# 		primeBank.append(1)
-		# 		coefficient.append(0)
-			# else:
-				# avoir le nombre premier suivant du dernier
-				# primeMultiples.append(getNthPrime(len(primeBank)))
-				# coefficient.append(0)
 	
 	primeMultiplesFinal = []
+
 	for i in range(len(coefficient)):
 		primeMultiplesFinal.append(primeMultiples[i])
-
-
-
-
 
 	return primeMultiplesFinal, coefficient
 
@@ -366,13 +337,14 @@ def primeNumberSumDecomposition(number):
 
 # EXEC
 
+
+# renvoie la décomposition en somme de puissance entre 2 bornes
 for j in range(345,567):
 	decompo = primeNumberSumDecomposition(j)
 	total = 0
 	for i in range(len(decompo[1])):
 		total += decompo[0][i]**decompo[1][i]
 	print(j, primeNumberSumDecomposition(j), total == j,j, total)
-
 
 
 
