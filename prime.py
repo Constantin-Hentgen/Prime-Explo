@@ -1,10 +1,24 @@
 import time
 import matplotlib.pyplot as plt
 import math
+from decimal import *
 
 primeBank = [2]
 valueList = []
 timeList = []
+
+
+# tester la primalité uniquement depuis des nombres premiers jusqu'à *ceil(math.sqrt(number))
+def isPrimeEnhanced(potentialPrime):
+	# avoid useless computes if it's already a prime number
+	if potentialPrime in primeBank:
+		return True
+		
+	for i in range(math.ceil(math.sqrt(potentialPrime))):
+		if potentialPrime % primeBank[i] == 0:
+			return False
+		return True
+
 
 # renvoie si l'entrée est un nombre premier
 def isPrime(potentialPrime):
@@ -68,6 +82,13 @@ def primeFinderUntil(bound):
 			primeBank.append(potentialPrime)
 
 
+# renvoie tous les nombres premiers inférieurs à une borne
+def primeFinderUntilEnhanced(bound):
+	for potentialPrime in range(primeBank[-1] + 1,bound):
+		if isPrimeEnhanced(potentialPrime):
+			primeBank.append(potentialPrime)
+
+
 # renvoie x nombres premiers
 def xPrimeFinder(quantity):
 	bound = 1
@@ -80,6 +101,15 @@ def xPrimeFinder(quantity):
 def getNthPrime(rank):
 	xPrimeFinder(rank)
 	return primeBank[-1]
+
+
+def startTime():
+	return time.time()
+
+
+def endTime(start, accuracy):
+	print(round(Decimal(time.time() - start),accuracy))
+	return round(Decimal(time.time() - start),accuracy)
 
 
 # trace le temps nécessaire pour une quantité de calcul
@@ -291,7 +321,6 @@ def primeNumberDecomposition(number):
 	return final
 
 
-
 def primeNumberSumDecomposition(number):
 	primeFinderUntil(round(math.sqrt(number))+50)
 	reste = number
@@ -351,6 +380,8 @@ def multiplesFinder(number):
 	for element in primeBank:
 		if number % element == 0:
 			multipleBank.append(element)
+		if element > number:
+			break
 	return multipleBank
 
 
@@ -362,19 +393,41 @@ def primeNeighbors(number):
 			neighbors.append(element)
 			break
 	return neighbors
+
+
 # ________________________________________________________________________
 
 
 # EXEC
 
-primeFinderUntil(10000)
+
+bound = 1000000
+
+
+start = startTime()
+primeFinderUntilEnhanced(bound)
+oldtime = endTime(start, 6)
+
+print("____________________")
+
+primeBank = [2]
+start = startTime()
+primeFinderUntil(bound)
+newtime = endTime(start, 6)
+
+
+print("____________________")
+print("delta :", abs(oldtime-newtime))
+print("ratio :", round(100*oldtime/newtime,1), "%  || ", round(100*newtime/oldtime,1), "%")
+
+
 
 
 # analyse tous les nombres de 400 à 800
-for i in range(400,800):
-	print("_____________________")
-	print(i)
-	inspector(i)
+# for i in range(400,800):
+# 	print("_____________________")
+# 	print(i)
+# 	inspector(i)
 
 
 
