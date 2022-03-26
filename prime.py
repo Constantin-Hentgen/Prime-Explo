@@ -10,14 +10,13 @@ timeList = []
 
 # tester la primalité uniquement depuis des nombres premiers jusqu'à *ceil(math.sqrt(number))
 def isPrimeEnhanced(potentialPrime):
-	# avoid useless computes if it's already a prime number
+	primeControl = []
 	if potentialPrime in primeBank:
 		return True
-		
-	for i in range(math.ceil(math.sqrt(potentialPrime))):
-		if potentialPrime % primeBank[i] == 0:
+	for primeNumber in primeBank:
+		if potentialPrime % primeNumber == 0:
 			return False
-		return True
+	return True
 
 
 # renvoie si l'entrée est un nombre premier
@@ -131,7 +130,6 @@ def plotTimeToCompute(quantity):
 	ax.set_ylabel('temps de calcul en secondes')
 	plt.title('Temps de calcul Nombres Premiers')
 	plt.show()
-
 
 # fonction pour avoir le temps pour un nombre de calcul
 def timeFromSeconds(seconds):
@@ -401,29 +399,29 @@ def primeNeighbors(number):
 # EXEC
 
 
-bound = 1000000
+# bound = 100000
 
 
-start = startTime()
-primeFinderUntilEnhanced(bound)
-oldtime = endTime(start, 6)
+# start = startTime()
+# primeFinderUntilEnhanced(bound)
+# oldtime = endTime(start, 6)
 
-print("____________________")
+# print("____________________")
 
-primeBank = [2]
-start = startTime()
-primeFinderUntil(bound)
-newtime = endTime(start, 6)
+# primeBank = [2]
+# start = startTime()
+# primeFinderUntil(bound)
+# newtime = endTime(start, 6)
 
+# print("____________________")
 
-print("____________________")
-print("delta :", abs(oldtime-newtime))
-print("ratio :", round(100*oldtime/newtime,1), "%  || ", round(100*newtime/oldtime,1), "%")
-
-
+# print("delta :", abs(oldtime-newtime))
+# print("ratio :", round(100*oldtime/newtime,1), "%  || ", round(100*newtime/oldtime,1), "%")
 
 
-# analyse tous les nombres de 400 à 800
+
+# primeFinderUntilEnhanced(800)
+# # analyse tous les nombres de 400 à 800
 # for i in range(400,800):
 # 	print("_____________________")
 # 	print(i)
@@ -459,16 +457,27 @@ print("ratio :", round(100*oldtime/newtime,1), "%  || ", round(100*newtime/oldti
 
 
 # trouve tous les nombres premiers inférieurs à 10k
-# primeFinderUntil(100000)
+# primeFinderUntilen(100000)
 # print(primeBank)
 
+primeBank = [2]
+primeFinderUntil(100)
+print(primeBank)
+primeBank = [2]
+primeFinderUntilEnhanced(100)
+print(primeBank)
 
-# plotTimeToCompute(1000)
+# for element in primeBank:
+# 	print(element, isPrimeEnhanced(element))
+
+
 # print(getNthPrime(6282))
 
 
-# renvoie le 1200th nombre premier
-# print(getNthPrime(1200))
+
+
+# renvoie le 798th nombre premier
+# print(getNthPrime(798))
 
 
 # trouve 20 nombres premiers
