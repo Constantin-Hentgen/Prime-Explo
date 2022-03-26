@@ -1,6 +1,7 @@
 import time
 import matplotlib.pyplot as plt
 import math
+import numba
 from decimal import *
 
 primeBank = [2]
@@ -20,17 +21,17 @@ def isPrimeEnhanced(potentialPrime):
 
 
 # renvoie si l'entrée est un nombre premier
-def isPrime(potentialPrime):
-	primeControl = []
-	if potentialPrime in primeBank:
-		return True
-	for primeNumber in primeBank:
-		if potentialPrime%primeNumber != 0:
-			primeControl.append(True)
-			if primeControl.count(True) == len(primeBank):
-				return True
-		else:
-			return False
+# def isPrime(potentialPrime):
+# 	primeControl = []
+# 	if potentialPrime in primeBank:
+# 		return True
+# 	for primeNumber in primeBank:
+# 		if potentialPrime%primeNumber != 0:
+# 			primeControl.append(True)
+# 			if primeControl.count(True) == len(primeBank):
+# 				return True
+# 		else:
+# 			return False
 
 
 # renvoie un nombre sans les 0 inutiles en décimal
@@ -47,7 +48,7 @@ def dropZeros(number):
 # faire un latex avec le cheminement pour obtenir la formule
 # renvoie si le nombre premier est un nombre de Mersenne
 def isMersenne(number):
-	if isPrime(number):
+	if isPrimeEnhanced(number):
 		if type(dropZeros(math.log((number+1)**(1/math.log(2))))) == int:
 			return True
 	else:
@@ -67,7 +68,7 @@ def getMersenneUntil(bound):
 	MersennePowerBank = []
 
 	for i in range(bound):
-		if isPrime(i) and isMersenne(i):
+		if isPrimeEnhanced(i) and isMersenne(i):
 			MersenneBank.append(i)
 			MersennePowerBank.append(getMersennePower(i))
 	
@@ -77,15 +78,19 @@ def getMersenneUntil(bound):
 # renvoie tous les nombres premiers inférieurs à une borne
 def primeFinderUntil(bound):
 	for potentialPrime in range(primeBank[-1] + 1,bound):
-		if isPrime(potentialPrime):
+		if isPrimeEnhanced(potentialPrime):
 			primeBank.append(potentialPrime)
 
 
 # renvoie tous les nombres premiers inférieurs à une borne
+# @numba.jit
 def primeFinderUntilEnhanced(bound):
+	start = startTime()
 	for potentialPrime in range(primeBank[-1] + 1,bound):
 		if isPrimeEnhanced(potentialPrime):
+			print(potentialPrime)
 			primeBank.append(potentialPrime)
+	return endTime(start, 2)
 
 
 # renvoie x nombres premiers
@@ -167,7 +172,7 @@ def predictTimeToCompute(quantity):
 
 # determine si le nombre est un nombre de Fermat
 def isFermat(number):
-	if isPrime(number):
+	if isPrimeEnhanced(number):
 		if number > 2:
 			if type(dropZeros(math.log((math.log((number-1)**(1/math.log(2))))**(1/math.log(2))))) == int:
 				return True
@@ -200,8 +205,8 @@ def getXfermat(quantity):
 
 # détermine si un nombre possède des jumeaux (N+2 || N-2, N nombre premier)
 def hasTwin(number):
-	if (isPrime(number)):
-		if (number >= 3 and isPrime(number-2)) or isPrime(number+2):
+	if (isPrimeEnhanced(number)):
+		if (number >= 3 and isPrimeEnhanced(number-2)) or isPrimeEnhanced(number+2):
 			return True
 		else:
 			return False
@@ -213,17 +218,17 @@ def hasTwin(number):
 def twinFinder(number):
 	twins = []
 	if (hasTwin(number)):
-		if (number >= 3 and isPrime(number-2)):
+		if (number >= 3 and isPrimeEnhanced(number-2)):
 			twins.append(number-2)
-		if (isPrime(number+2)):
+		if (isPrimeEnhanced(number+2)):
 			twins.append(number+2)
 	return twins
 			
 
 # détermine si un nombre est un nombre (X) de Sophie Germain : X est premier ainsi que (2*X + 1)
 def isSophieGermain(number):
-	if isPrime(number):
-		if isPrime(2*number+1):
+	if isPrimeEnhanced(number):
+		if isPrimeEnhanced(2*number+1):
 			return True
 		else:
 			return False
@@ -291,10 +296,10 @@ def primeNumberDecomposition(number):
 	multiples = []
 	reste = number
 
-	if isPrime(number) == False:
+	if isPrimeEnhanced(number) == False:
 
 		counter = 0
-		while isPrime(reste) == False:
+		while isPrimeEnhanced(reste) == False:
 			if reste % primeBank[counter] == 0:
 				multiples.append(primeBank[counter])
 				reste = reste / primeBank[counter]
@@ -356,7 +361,7 @@ def primeNumberSumDecomposition(number):
 
 
 def inspector(number):
-	if isPrime(number):
+	if isPrimeEnhanced(number):
 		print("Prime !")
 	else:
 		if isMersenne(number):
@@ -460,12 +465,14 @@ def primeNeighbors(number):
 # primeFinderUntilen(100000)
 # print(primeBank)
 
-primeBank = [2]
-primeFinderUntil(100)
-print(primeBank)
-primeBank = [2]
-primeFinderUntilEnhanced(100)
-print(primeBank)
+
+
+# primeBank = [2]
+# primeFinderUntil(100)
+# print(primeBank)
+# primeBank = [2]
+# primeFinderUntilEnhanced(100)
+# print(primeBank)
 
 # for element in primeBank:
 # 	print(element, isPrimeEnhanced(element))
@@ -473,7 +480,13 @@ print(primeBank)
 
 # print(getNthPrime(6282))
 
+primeFinderUntilEnhanced(1000000)
+	
+f = open("bank", "w")
+f.write(str(primeBank))
+f.close()
 
+# faire une fonction qui va continuer à calculer des nombres premiers
 
 
 # renvoie le 798th nombre premier
