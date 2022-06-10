@@ -1,173 +1,12 @@
 import time
-import matplotlib.pyplot as plt
 import math
 import numba
 from decimal import *
+from multiprocessing import Process, cpu_count
 
 primeBank = [2]
 valueList = []
 timeList = []
-
-
-# tester la primalité uniquement depuis des nombres premiers jusqu'à *ceil(math.sqrt(number))
-def isPrimeEnhanced(potentialPrime):
-	primeControl = []
-	if potentialPrime in primeBank:
-		return True
-	for primeNumber in primeBank:
-		if potentialPrime % primeNumber == 0:
-			return False
-	return True
-
-
-# renvoie si l'entrée est un nombre premier
-# def isPrime(potentialPrime):
-# 	primeControl = []
-# 	if potentialPrime in primeBank:
-# 		return True
-# 	for primeNumber in primeBank:
-# 		if potentialPrime%primeNumber != 0:
-# 			primeControl.append(True)
-# 			if primeControl.count(True) == len(primeBank):
-# 				return True
-# 		else:
-# 			return False
-
-
-# renvoie un nombre sans les 0 inutiles en décimal
-def dropZeros(number):
-	decimalPart = number - math.floor(number)
-	
-	if decimalPart == 0:
-		return math.floor(number)
-	
-	else:
-		return number
-
-
-# faire un latex avec le cheminement pour obtenir la formule
-# renvoie si le nombre premier est un nombre de Mersenne
-def isMersenne(number):
-	if isPrimeEnhanced(number):
-		if type(dropZeros(math.log((number+1)**(1/math.log(2))))) == int:
-			return True
-	else:
-		return False
-
-
-# renvoie la puissance de 2 d'un nombre premier de Mersenne
-def getMersennePower(number):
-	if isPrime(number):
-		if isMersenne(number):
-			return dropZeros(math.log((number+1)**(1/math.log(2))))
-
-
-# renvoie la liste des nombres premiers de Mersenne inférieurs à une borne ainsi que leur puissance de 2
-def getMersenneUntil(bound):
-	MersenneBank = []
-	MersennePowerBank = []
-
-	for i in range(bound):
-		if isPrimeEnhanced(i) and isMersenne(i):
-			MersenneBank.append(i)
-			MersennePowerBank.append(getMersennePower(i))
-	
-	return MersenneBank, MersennePowerBank
-
-
-# renvoie tous les nombres premiers inférieurs à une borne
-def primeFinderUntil(bound):
-	for potentialPrime in range(primeBank[-1] + 1,bound):
-		if isPrimeEnhanced(potentialPrime):
-			primeBank.append(potentialPrime)
-
-
-# renvoie tous les nombres premiers inférieurs à une borne
-# @numba.jit
-def primeFinderUntilEnhanced(bound):
-	start = startTime()
-	for potentialPrime in range(primeBank[-1] + 1,bound):
-		if isPrimeEnhanced(potentialPrime):
-			print(potentialPrime)
-			primeBank.append(potentialPrime)
-	return endTime(start, 2)
-
-
-# renvoie x nombres premiers
-def xPrimeFinder(quantity):
-	bound = 1
-	while len(primeBank) < quantity:
-		primeFinderUntil(bound)
-		bound += 1
-
-
-# renvoie le n-ième nombre premier
-def getNthPrime(rank):
-	xPrimeFinder(rank)
-	return primeBank[-1]
-
-
-def startTime():
-	return time.time()
-
-
-def endTime(start, accuracy):
-	print(round(Decimal(time.time() - start),accuracy))
-	return round(Decimal(time.time() - start),accuracy)
-
-
-# trace le temps nécessaire pour une quantité de calcul
-def plotTimeToCompute(quantity):
-	start = time.time()
-	bound = 1
-
-	while len(primeBank) < quantity:
-		bound += 1
-
-		if len(primeBank)%50 == 0:
-			valueList.append(len(primeBank))
-			runTime = round((time.time() - start),3)
-			timeList.append(runTime)
-
-	fig, ax = plt.subplots(num="Détermination de nombres premiers")
-	ax.plot(valueList, timeList);
-	ax.set_xlabel('nombre de calcul')
-	ax.set_ylabel('temps de calcul en secondes')
-	plt.title('Temps de calcul Nombres Premiers')
-	plt.show()
-
-# fonction pour avoir le temps pour un nombre de calcul
-def timeFromSeconds(seconds):
-  seconds = seconds % (24 * 3600)
-  hour = seconds // 3600
-  seconds %= 3600
-  minutes = seconds // 60
-  seconds %= 60
-    
-  return "%d:%02d:%02d" %(hour, minutes, seconds)
-
-
-# renvoie le nombre de jours, heures, minutes et secondes à partir de secondes
-def timeReal(seconds):
-	day = seconds // (24 * 3600)
-	seconds = seconds % (24 * 3600)
-	hour = seconds // 3600
-	seconds %= 3600
-	minutes = seconds // 60
-	seconds %= 60
-
-	return "%02d days %02d hours %02d min %02d sec" %(day, hour, minutes, seconds)
-
-
-#renvoie le temps de calcul à partir d'un nombre de calculs (sur base d'un polynôme)
-def getRawTime(quantity):
-	if quantity >= 1500:
-		return 25*(10**(-7))*(quantity**2) - 0.0075*quantity + 6
-
-
-# renvoie le temps estimé de calcul avec ma machine pour une quantité donnée de nombres premiers
-def predictTimeToCompute(quantity):
-	return timeReal(getRawTime(quantity))
 
 
 # determine si le nombre est un nombre de Fermat
@@ -360,24 +199,6 @@ def primeNumberSumDecomposition(number):
 	return primeMultiplesFinal, coefficient
 
 
-def inspector(number):
-	if isPrimeEnhanced(number):
-		print("Prime !")
-	else:
-		if isMersenne(number):
-			print("nombre de Mersenne")
-		if isFermat(number):
-			print("nombre de Fermat")
-		if isPythagorean(number):
-			print("nombre de Pythagore")
-		if isSophieGermain(number):
-			print("nombre de Sophie Germain")
-		else:
-			print("nombre parfaitement inintéressant")
-			print(multiplesFinder(number))
-			print("les nombres premiers voisins sont : ", primeNeighbors(number))
-
-
 def multiplesFinder(number):
 	multipleBank = []
 	for element in primeBank:
@@ -477,14 +298,31 @@ def primeNeighbors(number):
 # for element in primeBank:
 # 	print(element, isPrimeEnhanced(element))
 
-
 # print(getNthPrime(6282))
 
-primeFinderUntilEnhanced(1000000)
-	
-f = open("bank", "w")
-f.write(str(primeBank))
-f.close()
+# primeFinderUntilEnhanced(200000)
+
+
+primeFinderFromUntilEnhanced(2, 240000)
+print("___________________________________________________")
+# print(primeBank)
+# print(cpu_count())
+
+
+
+# 2,3,4,5,6
+
+# if __name__ == "__main__":
+# 	split()
+
+
+print(len(primeBank))
+
+
+# écrit dans un document toute la liste 
+# f = open("bank", "w")
+# f.write(str(primeBank))
+# f.close()
 
 # faire une fonction qui va continuer à calculer des nombres premiers
 
