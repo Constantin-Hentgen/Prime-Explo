@@ -1,4 +1,4 @@
-
+import math
 # faire un latex avec le cheminement pour obtenir la formule
 # renvoie si le nombre premier est un nombre de Mersenne
 def isMersenne(number):

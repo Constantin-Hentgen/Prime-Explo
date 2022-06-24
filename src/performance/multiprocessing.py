@@ -1,3 +1,6 @@
+from multiprocessing import Process, cpu_count
+
+
 # 2 modes : auto which detect the number of threads and split the tasks
 # mode full custom where you choose the number of threads
 

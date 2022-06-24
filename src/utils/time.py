@@ -1,3 +1,6 @@
+import time
+from decimal import *
+
 
 def startTime():
 	return time.time()
@@ -33,10 +36,10 @@ def predictTimeToCompute(quantity):
 
 # fonction pour avoir le temps pour un nombre de calcul
 def timeFromSeconds(seconds):
-  seconds = seconds % (24 * 3600)
-  hour = seconds // 3600
-  seconds %= 3600
-  minutes = seconds // 60
-  seconds %= 60
-    
-  return "%d:%02d:%02d" %(hour, minutes, seconds)
+	seconds = seconds % (24 * 3600)
+	hour = seconds // 3600
+	seconds %= 3600
+	minutes = seconds // 60
+	seconds %= 60
+		
+	return "%d:%02d:%02d" %(hour, minutes, seconds)
