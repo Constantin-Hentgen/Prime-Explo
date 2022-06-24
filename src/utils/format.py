@@ -1,3 +1,4 @@
+import math
 
 # renvoie un nombre sans les 0 inutiles en décimal
 def dropZeros(number):

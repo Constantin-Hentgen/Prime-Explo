@@ -10,3 +10,8 @@ computer's stats :
 | CPU  | AMD Ryzen 5 4500U with Radeon Graphics (6) @ 2.375GHz |
 
 ![Détermination_de_nombres_premiers](https://user-images.githubusercontent.com/48366000/155843267-4ebd204d-59f0-4ace-b59b-ea5d0c314ccb.png)
+
+## How to use it ?
+
+## Credits
+

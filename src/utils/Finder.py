@@ -1,15 +1,15 @@
+from utils import inspector, time
 
 # renvoie tous les nombres premiers inférieurs à une borne
-def primeFinderUntil(bound):
+def primeFinderUntil(bound, primeBank):
 	for potentialPrime in range(primeBank[-1] + 1,bound):
-		if isPrimeEnhanced(potentialPrime):
+		if inspector.isPrimeEnhanced(potentialPrime, primeBank):
 			primeBank.append(potentialPrime)
 
 
 # renvoie tous les nombres premiers inférieurs à une borne
-# @numba.jit
-def primeFinderUntilEnhanced(bound):
-	start = startTime()
+def primeFinderUntilEnhanced(bound, primeBank):
+	start = time.startTime()
 	for potentialPrime in range(primeBank[-1] + 1,bound):
 		if isPrimeEnhanced(potentialPrime):
 			print(potentialPrime)
@@ -17,9 +17,8 @@ def primeFinderUntilEnhanced(bound):
 	return endTime(start, 2)
 
 
-
 def primeFinderFromUntilEnhanced(boundInferior, boundSuperior):
-	start = startTime()
+	start = time.startTime()
 	for potentialPrime in range(boundInferior,boundSuperior):
 		if isPrimeEnhanced(potentialPrime):
 			primeBank.append(potentialPrime)
@@ -38,3 +37,4 @@ def xPrimeFinder(quantity):
 def getNthPrime(rank):
 	xPrimeFinder(rank)
 	return primeBank[-1]
+
