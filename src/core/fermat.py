@@ -1,5 +1,5 @@
 import math, decimal
-from gen import inspector
+from core import inspector
 
 # https://en.wikipedia.org/wiki/Fermat_number
 def isFermat(number, primeBank):
