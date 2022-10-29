@@ -1,4 +1,5 @@
-from utils import inspector, time
+from core import inspector
+from util import time
 
 # renvoie tous les nombres premiers inférieurs à une borne
 def primeFinderUntil(bound, primeBank):
