@@ -1,14 +1,25 @@
-from utils import Finder
+# from util import finder
+from gen import fermat
 
 if __name__ == "__main__":
 	print("test d'existence")
 	primeBank = [2]
+
+# Verification of finder.py : PASSED
+
 	# Finder.primeFinderUntil(30, primeBank)
-	Finder.primeFinderFromUntilEnhanced(30,primeBank)
-	print(primeBank)
+	# finder.primeFinderFromUntilEnhanced(30,50,primeBank)
+	# finder.xPrimeFinder(20,primeBank)
+	# finder.getNthPrime(45,primeBank)
+	# print(finder.getNthPrime(45,primeBank))
 
 
-	# EXEC
+	# print(fermat.getXfermat(3))
+
+# Verification of inspector.py : 
+# print(primeBank)
+
+
 
 	# bound = 100000
 

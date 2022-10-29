@@ -17,24 +17,24 @@ def primeFinderUntilEnhanced(bound, primeBank):
 	return endTime(start, 2)
 
 
-def primeFinderFromUntilEnhanced(boundInferior, boundSuperior):
+def primeFinderFromUntilEnhanced(boundInferior, boundSuperior, primeBank):
 	start = time.startTime()
 	for potentialPrime in range(boundInferior,boundSuperior):
-		if isPrimeEnhanced(potentialPrime):
+		if inspector.isPrimeEnhanced(potentialPrime, primeBank):
 			primeBank.append(potentialPrime)
-	return endTime(start, 2)
+	return time.endTime(start, 2)
 
 
 # renvoie x nombres premiers
-def xPrimeFinder(quantity):
+def xPrimeFinder(quantity,primeBank):
 	bound = 1
 	while len(primeBank) < quantity:
-		primeFinderUntil(bound)
+		primeFinderUntil(bound, primeBank)
 		bound += 1
 
 
 # renvoie le n-ième nombre premier
-def getNthPrime(rank):
-	xPrimeFinder(rank)
+def getNthPrime(rank, primeBank):
+	xPrimeFinder(rank, primeBank)
 	return primeBank[-1]
 
