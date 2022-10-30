@@ -24,8 +24,8 @@ def primeFinderFromUntilEnhanced(boundInferior, boundSuperior, primeBank):
 	
 	for potentialPrime in range(boundInferior,boundSuperior):
 		if inspector.isPrimeEnhanced(potentialPrime, primeBank):
-			primeBank.append(potentialPrime)
-			contribution.append(potentialPrime)
+			primeBank.append(int(potentialPrime))
+			contribution.append(int(potentialPrime))
 			# print(potentialPrime)
 	return contribution
 	# return time.endTime(start, 2)

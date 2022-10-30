@@ -43,8 +43,8 @@ def parLaPuissanceDesCoeursProco(bound_A, bound_B):
 	return ultimae
 
 if __name__ == "__main__":
-	iteration = 100
-	calculationRange = 2000
+	iteration = 1000
+	calculationRange = 25000
 
 	myDb = mysql.connector.connect(
 		host = "localhost",
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 		contribution = parLaPuissanceDesCoeursProco(bound_A, bound_B)
 		totalContribution += len(contribution)
 		for primeNumber in contribution:
-			print(primeNumber)
+			print(int(primeNumber))
 
 		# finder.primeFinderFromUntilEnhanced(fetched_bank[-1]+1, fetched_bank[-1]+calculationRange, fetched_bank)
 
