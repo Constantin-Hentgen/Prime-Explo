@@ -43,22 +43,26 @@ def parLaPuissanceDesCoeursProco(bound_A, bound_B):
 	return ultimae
 
 if __name__ == "__main__":
-	iteration = 50
+	iteration = 100
 	calculationRange = 2000
 
+	myDb = mysql.connector.connect(
+		host = "localhost",
+		user = "root",
+		password = "root"
+	)
+	
+	cursor = myDb.cursor()
+	cursor.execute("USE prime_base;")
+
+	totalContribution = 0
+
 	for i in range(iteration):
-		myDb = mysql.connector.connect(
-			host = "localhost",
-			user = "root",
-			password = "root"
-		)
-		
-		cursor = myDb.cursor()
-		cursor.execute("USE prime_base;")
 
 		# récupérer tous les primes
 		cursor.execute("SELECT * FROM prime_table;")
 		fetched_bank = [tuple[0] for tuple in cursor]
+		originalLength = len(fetched_bank)
 		primeBank = fetched_bank
 		lastPrime = fetched_bank[-1]
 
@@ -66,6 +70,9 @@ if __name__ == "__main__":
 		bound_B = lastPrime + calculationRange
 
 		contribution = parLaPuissanceDesCoeursProco(bound_A, bound_B)
+		totalContribution += len(contribution)
+		for primeNumber in contribution:
+			print(primeNumber)
 
 		# finder.primeFinderFromUntilEnhanced(fetched_bank[-1]+1, fetched_bank[-1]+calculationRange, fetched_bank)
 
@@ -76,5 +83,5 @@ if __name__ == "__main__":
 		for primeNumber in contribution:
 			cursor.execute("INSERT INTO prime_table VALUES ({});".format(primeNumber))
 		myDb.commit()
-
-		print(lastPrime, contribution[-1])
+	
+	print('La contribution s’élève à {} nombres premiers, Merci :) [total: {} nombres premiers dans la BDD]'.format(totalContribution, originalLength + totalContribution))
