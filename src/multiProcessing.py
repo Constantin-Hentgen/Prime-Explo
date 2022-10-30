@@ -1,10 +1,11 @@
-import mysql.connector
 from multiprocessing import cpu_count
 from pathos.multiprocessing import ProcessingPool as Pool
 from core import finder
 import numpy as numpy
 import time
 
+# mode auto which detect the number of threads and split the tasks
+# mode full custom where you choose the number of threads
 
 def split(inferiorBound, superiorBound):
 	totalCpu = cpu_count()
@@ -36,45 +37,25 @@ def asynchronax(coreNumber, startingBounds, endingBounds, banks):
 		result = p.map(finder.primeFinderFromUntilEnhanced, startingBounds, endingBounds, banks)
 	return result
 
+
+primeBank = [2,3,5,7]
+bound_A = 10
+bound_B = 1000000
+
 def parLaPuissanceDesCoeursProco(bound_A, bound_B):
 	enonce = split(bound_A, bound_B)
 	ultimae = numpy.concatenate(asynchronax(enonce[0], enonce[1], enonce[2], enonce[3]))
 	# print(ultimae)
 	return ultimae
 
-if __name__ == "__main__":
-	iteration = 50
-	calculationRange = 2000
+# BENCHMARK
 
-	for i in range(iteration):
-		myDb = mysql.connector.connect(
-			host = "localhost",
-			user = "root",
-			password = "root"
-		)
-		
-		cursor = myDb.cursor()
-		cursor.execute("USE prime_base;")
+start = time.time()
+finder.primeFinderFromUntilEnhanced(bound_A, bound_B, primeBank)
+end = time.time()
+print('standard : {}'.format(end-start))
 
-		# récupérer tous les primes
-		cursor.execute("SELECT * FROM prime_table;")
-		fetched_bank = [tuple[0] for tuple in cursor]
-		primeBank = fetched_bank
-		lastPrime = fetched_bank[-1]
-
-		bound_A = lastPrime + 1
-		bound_B = lastPrime + calculationRange
-
-		contribution = parLaPuissanceDesCoeursProco(bound_A, bound_B)
-
-		# finder.primeFinderFromUntilEnhanced(fetched_bank[-1]+1, fetched_bank[-1]+calculationRange, fetched_bank)
-
-		# contribution = [prime for prime in fetched_bank if prime > lastPrime]
-
-		# print(contribution)
-
-		for primeNumber in contribution:
-			cursor.execute("INSERT INTO prime_table VALUES ({});".format(primeNumber))
-		myDb.commit()
-
-		print(lastPrime, contribution[-1])
+start = time.time()
+parLaPuissanceDesCoeursProco(bound_A, bound_B)
+end = time.time()
+print('multiprocessing : {}'.format(end-start))

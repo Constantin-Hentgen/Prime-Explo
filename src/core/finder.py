@@ -19,11 +19,16 @@ def primeFinderUntilEnhanced(bound, primeBank):
 
 
 def primeFinderFromUntilEnhanced(boundInferior, boundSuperior, primeBank):
-	start = time.startTime()
+	# start = time.startTime()
+	contribution = []
+	
 	for potentialPrime in range(boundInferior,boundSuperior):
 		if inspector.isPrimeEnhanced(potentialPrime, primeBank):
 			primeBank.append(potentialPrime)
-	return time.endTime(start, 2)
+			contribution.append(potentialPrime)
+			# print(potentialPrime)
+	return contribution
+	# return time.endTime(start, 2)
 
 
 # renvoie x nombres premiers
