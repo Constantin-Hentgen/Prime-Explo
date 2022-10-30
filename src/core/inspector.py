@@ -23,21 +23,7 @@ def isPrimeEnhanced(potentialPrime, primeBank):
 	primeControl = []
 	if potentialPrime in primeBank:
 		return True
-	for primeNumber in primeBank:
-		if potentialPrime % primeNumber == 0:
+	for index in range(0,int(len(primeBank) / 2) + 1) : # inutile de vérifier le modulo passé la moitié de la bank
+		if potentialPrime % primeBank[index] == 0:
 			return False
 	return True
-
-
-# renvoie si l'entrée est un nombre premier
-# def isPrime(potentialPrime):
-# 	primeControl = []
-# 	if potentialPrime in primeBank:
-# 		return True
-# 	for primeNumber in primeBank:
-# 		if potentialPrime%primeNumber != 0:
-# 			primeControl.append(True)
-# 			if primeControl.count(True) == len(primeBank):
-# 				return True
-# 		else:
-# 			return False
