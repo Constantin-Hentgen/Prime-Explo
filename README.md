@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The feature of this program is to build a database with as much prime numbers as possible with some of their properties (eg. is it a Fermat number ?).
+The feature of this program is to build a database with as much prime numbers as possible with some of their properties (eg. is it a Fermat number ?). The main goal is to reach the million of calculated prime numbers.
 
 ## Specifications of the computer in charge of calculations
 
