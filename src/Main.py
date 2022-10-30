@@ -1,9 +1,52 @@
 import mysql.connector
-
+from multiprocessing import cpu_count
+from pathos.multiprocessing import ProcessingPool as Pool
 from core import finder
+import numpy as numpy
+import time
+
+
+def split(inferiorBound, superiorBound):
+	totalCpu = cpu_count()
+	totalRange = superiorBound - inferiorBound
+
+	smallRanges = list(reversed([int(totalRange/totalCpu) for i in range(1,totalCpu)]))
+	smallRanges.append(totalRange-int(totalRange/totalCpu)*(totalCpu-1))
+
+	startingBounds = []
+	endingBounds = []
+
+	for cpu in range(0,totalCpu):
+		if cpu == 0 or cpu == totalCpu - 1:
+			# print(inferiorBound + cpu * smallRanges[cpu], inferiorBound + (cpu + 1) * smallRanges[cpu])
+			startingBounds.append(inferiorBound + cpu * smallRanges[cpu])
+			endingBounds.append(inferiorBound + (cpu + 1) * smallRanges[cpu])
+		else:
+			# print(1 + inferiorBound + cpu * smallRanges[cpu], inferiorBound + (cpu + 1) * smallRanges[cpu])
+			startingBounds.append(1 + inferiorBound + cpu * smallRanges[cpu])
+			endingBounds.append(inferiorBound + (cpu + 1) * smallRanges[cpu])
+
+	return totalCpu, startingBounds, endingBounds, [primeBank for i in range(0,totalCpu)]
+
+#	remettre dans l’ordre les résultats
+	# pourquoi pas mettre directement dans la base de données les résultats (un peu bullshit quand même)
+
+def asynchronax(coreNumber, startingBounds, endingBounds, banks):
+	with Pool(coreNumber) as p:
+		result = p.map(finder.primeFinderFromUntilEnhanced, startingBounds, endingBounds, banks)
+	return result
+
+def parLaPuissanceDesCoeursProco(bound_A, bound_B):
+	enonce = split(bound_A, bound_B)
+	ultimae = numpy.concatenate(asynchronax(enonce[0], enonce[1], enonce[2], enonce[3]))
+	# print(ultimae)
+	return ultimae
 
 if __name__ == "__main__":
-	for i in range(50):
+	iteration = 50
+	calculationRange = 2000
+
+	for i in range(iteration):
 		myDb = mysql.connector.connect(
 			host = "localhost",
 			user = "root",
@@ -13,19 +56,25 @@ if __name__ == "__main__":
 		cursor = myDb.cursor()
 		cursor.execute("USE prime_base;")
 
-
 		# récupérer tous les primes
 		cursor.execute("SELECT * FROM prime_table;")
 		fetched_bank = [tuple[0] for tuple in cursor]
-		# print(fetched_bank[-1])
+		primeBank = fetched_bank
 		lastPrime = fetched_bank[-1]
 
-		# soit calculer de nouveaux primes soit fill les champs manquants (en partant des valeurs inférieurs) pour les primes existants
-		finder.primeFinderFromUntilEnhanced(fetched_bank[-1]+1, fetched_bank[-1]+5000, fetched_bank)
-		contribution = [prime for prime in fetched_bank if prime > lastPrime]
+		bound_A = lastPrime + 1
+		bound_B = lastPrime + calculationRange
 
-		print(lastPrime,contribution)
+		contribution = parLaPuissanceDesCoeursProco(bound_A, bound_B)
+
+		# finder.primeFinderFromUntilEnhanced(fetched_bank[-1]+1, fetched_bank[-1]+calculationRange, fetched_bank)
+
+		# contribution = [prime for prime in fetched_bank if prime > lastPrime]
+
+		# print(contribution)
 
 		for primeNumber in contribution:
 			cursor.execute("INSERT INTO prime_table VALUES ({});".format(primeNumber))
 		myDb.commit()
+
+		print(lastPrime, contribution[-1])
